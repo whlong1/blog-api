@@ -6,6 +6,7 @@ const router = Router()
 
 // ========= Public Routes ========= 
 router.get('/', blogsCtrl.index)
+router.get('/:id', blogsCtrl.show)
 
 // ========= Protected Routes ========= 
 router.use(decodeUserFromToken)
