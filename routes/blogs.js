@@ -9,11 +9,6 @@ const router = Router()
 
 // ========= Protected Routes ========= 
 router.use(decodeUserFromToken)
-```jsx
-import { Profile } from "../models/profile.js"
-import { Blog } from "../models/blog.js"
-
-export { }
-```
+router.post('/', checkAuth, blogsCtrl.create)
 
 export { router }
