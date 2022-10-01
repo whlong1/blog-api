@@ -38,8 +38,31 @@ const show = async (req, res) => {
   }
 }
 
+const update = async (req, res) => {
+  try {
+    return res.status(200).json(updatedBlog)
+  } catch (err) {
+    return res.status(500).json(err)
+  }
+}
+
+const deleteBlog = async (req, res) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id)
+    const profile = await Profile.findById(req.user.profile)
+    profile.blogs.remove({ _id: req.params.id })
+    await profile.save()
+    return res.status(204).end()
+  } catch (err) {
+    return res.status(500).json(err)
+  }
+}
+
+
 export {
   create,
   index,
-  show
+  show,
+  update,
+  deleteBlog as delete
 }
