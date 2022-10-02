@@ -39,7 +39,11 @@ const show = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
     return res.status(200).json(blog)
   } catch (err) {
     return res.status(500).json(err)
