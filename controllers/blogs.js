@@ -77,7 +77,6 @@ const createComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
   try {
-    console.log(req.params)
     const blog = await Blog.findById(req.params.blogId)
     const comment = blog.comments.id(req.params.commentId)
     comment.text = req.body.text
@@ -88,9 +87,21 @@ const updateComment = async (req, res) => {
   }
 }
 
+const deleteComment = async(req, res)=> {
+  try {
+    const blog = await Blog.findById(req.params.blogId)
+    blog.comments.remove({_id: req.params.commentId})
+    await blog.save()
+    return res.status(200).send('OK')
+  }catch(err){
+    res.status(500).json(err)
+  }
+}
+
 export {
   createComment,
   updateComment,
+  deleteComment,
 
   create,
   index,
