@@ -56,7 +56,7 @@ const deleteBlog = async (req, res) => {
     const profile = await Profile.findById(req.user.profile)
     profile.blogs.remove({ _id: req.params.id })
     await profile.save()
-    return res.status(204).end()
+    return res.status(200).send('OK')
   } catch (err) {
     return res.status(500).json(err)
   }
