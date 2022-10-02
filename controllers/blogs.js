@@ -18,7 +18,7 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const blogs = await Blog.find({})
-      .populate('author')
+      .populate('author', 'name blogs')
       .sort({ createdAt: 'desc' })
     return res.status(200).json(blogs)
   } catch (err) {
@@ -29,7 +29,7 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id)
-      .populate('author')
+      .populate('author', 'name blogs')
       .populate('comments.author')
     return res.status(200).json(blog)
   } catch (err) {
