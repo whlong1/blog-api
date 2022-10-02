@@ -15,5 +15,3 @@ router.put('/:id', checkAuth, blogsCtrl.update)
 router.delete('/:id', checkAuth, blogsCtrl.delete)
 
 export { router }
-
-
