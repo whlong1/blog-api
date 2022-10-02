@@ -59,7 +59,6 @@ const deleteBlog = async (req, res) => {
   }
 }
 
-
 export {
   create,
   index,
