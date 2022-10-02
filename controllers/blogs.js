@@ -62,7 +62,34 @@ const deleteBlog = async (req, res) => {
   }
 }
 
+const updateComment = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.blogId)
+    const comment = blog.comments.id(req.params.commentId)
+    comment.text = req.body.text
+    await blog.save()
+    return res.status(200).json(blog)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
+const createComment = async (req, res) => {
+  try {
+    req.body.author = req.user.profile
+    const blog = await Blog.findById(req.params.id)
+    blog.comments.push(req.body)
+    await blog.save()
+    const newComment = blog.comments[blog.comments.length - 1]
+    return res.status(201).json(newComment)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 export {
+  createComment,
+
   create,
   index,
   show,
