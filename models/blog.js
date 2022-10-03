@@ -13,6 +13,15 @@ const commentSchema = new mongoose.Schema(
 
 const blogSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+      enum: ['News', 'Sports', 'Entertainment'],
+    },
     text: {
       type: String,
       required: true,
