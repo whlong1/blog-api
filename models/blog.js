@@ -17,14 +17,14 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    text: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,
       enum: ['News', 'Sports', 'Games', 'Movies', 'Music', 'Television'],
-    },
-    text: {
-      type: String,
-      required: true,
     },
     comments: [commentSchema],
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }

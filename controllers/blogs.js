@@ -9,9 +9,9 @@ const create = async (req, res) => {
       { _id: req.user.profile },
       { $push: { blogs: blog } }
     )
-    return res.status(201).json(blog)
+    res.status(201).json(blog)
   } catch (err) {
-    return res.status(500).json(err)
+    res.status(500).json(err)
   }
 }
 
@@ -20,9 +20,9 @@ const index = async (req, res) => {
     const blogs = await Blog.find({})
       .populate('author', 'name blogs')
       .sort({ createdAt: 'desc' })
-    return res.status(200).json(blogs)
+    res.status(200).json(blogs)
   } catch (err) {
-    return res.status(500).json(err)
+    res.status(500).json(err)
   }
 }
 
@@ -31,7 +31,7 @@ const show = async (req, res) => {
     const blog = await Blog.findById(req.params.id)
       .populate('author', 'name blogs')
       .populate('comments.author')
-    return res.status(200).json(blog)
+    res.status(200).json(blog)
   } catch (err) {
     return res.status(500).json(err)
   }
@@ -44,21 +44,22 @@ const update = async (req, res) => {
       req.body,
       { new: true }
     )
-    return res.status(200).json(blog)
+    res.status(200).json(blog)
   } catch (err) {
-    return res.status(500).json(err)
+    res.status(500).json(err)
   }
 }
 
+// FIX
 const deleteBlog = async (req, res) => {
   try {
-    await Blog.findByIdAndDelete(req.params.id)
+    const blog = await Blog.findByIdAndDelete(req.params.id)
     const profile = await Profile.findById(req.user.profile)
     profile.blogs.remove({ _id: req.params.id })
     await profile.save()
-    return res.status(200).send('OK')
+    res.status(200).json(blog)
   } catch (err) {
-    return res.status(500).json(err)
+    res.status(500).json(err)
   }
 }
 
@@ -69,7 +70,7 @@ const createComment = async (req, res) => {
     blog.comments.push(req.body)
     await blog.save()
     const newComment = blog.comments[blog.comments.length - 1]
-    return res.status(201).json(newComment)
+    res.status(201).json(newComment)
   } catch (err) {
     res.status(500).json(err)
   }
@@ -81,19 +82,21 @@ const updateComment = async (req, res) => {
     const comment = blog.comments.id(req.params.commentId)
     comment.text = req.body.text
     await blog.save()
-    return res.status(200).json(comment)
+    res.status(200).json(comment)
   } catch (err) {
     res.status(500).json(err)
   }
 }
 
-const deleteComment = async(req, res)=> {
+
+//FIX
+const deleteComment = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.blogId)
-    blog.comments.remove({_id: req.params.commentId})
+    blog.comments.remove({ _id: req.params.commentId })
     await blog.save()
-    return res.status(200).send('OK')
-  }catch(err){
+    res.status(200).json(blog)
+  } catch (err) {
     res.status(500).json(err)
   }
 }
