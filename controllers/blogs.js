@@ -63,6 +63,7 @@ const deleteBlog = async (req, res) => {
   }
 }
 
+// UPDATE IN NOTION:
 const createComment = async (req, res) => {
   try {
     req.body.author = req.user.profile
