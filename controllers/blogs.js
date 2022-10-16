@@ -18,7 +18,7 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const blogs = await Blog.find({})
-      .populate('author', 'name blogs')
+      .populate('author')
       .sort({ createdAt: 'desc' })
     res.status(200).json(blogs)
   } catch (err) {
@@ -29,7 +29,7 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id)
-      .populate('author', 'name blogs')
+      .populate('author')
       .populate('comments.author')
     res.status(200).json(blog)
   } catch (err) {
@@ -50,7 +50,6 @@ const update = async (req, res) => {
   }
 }
 
-// FIX
 const deleteBlog = async (req, res) => {
   try {
     const blog = await Blog.findByIdAndDelete(req.params.id)
@@ -63,13 +62,13 @@ const deleteBlog = async (req, res) => {
   }
 }
 
-// UPDATE IN NOTION:
 const createComment = async (req, res) => {
   try {
     req.body.author = req.user.profile
     const blog = await Blog.findById(req.params.id)
     blog.comments.push(req.body)
     await blog.save()
+
     const newComment = blog.comments[blog.comments.length - 1]
     res.status(201).json(newComment)
   } catch (err) {
@@ -83,14 +82,12 @@ const updateComment = async (req, res) => {
     const comment = blog.comments.id(req.params.commentId)
     comment.text = req.body.text
     await blog.save()
-    res.status(200).json(comment)
+    res.status(200).json(blog)
   } catch (err) {
     res.status(500).json(err)
   }
 }
 
-
-//FIX
 const deleteComment = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.blogId)
