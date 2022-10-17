@@ -72,7 +72,6 @@ const createComment = async (req, res) => {
     const blog = await Blog.findById(req.params.id)
     blog.comments.push(req.body)
     await blog.save()
-
     const newComment = blog.comments[blog.comments.length - 1]
     const profile = await Profile.findById(req.user.profile)
     newComment.author = profile
@@ -85,8 +84,6 @@ const createComment = async (req, res) => {
 const updateComment = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.blogId)
-      .populate('author')
-      .populate('comments.author')
     const comment = blog.comments.id(req.params.commentId)
     comment.text = req.body.text
     await blog.save()
