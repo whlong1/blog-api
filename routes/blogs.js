@@ -5,10 +5,10 @@ import { decodeUserFromToken, checkAuth } from '../middleware/auth.js'
 const router = Router()
 
 // ========= Public Routes ========= 
+router.get('/', blogsCtrl.index)
 
 // ========= Protected Routes ========= 
 router.use(decodeUserFromToken)
-router.get('/', checkAuth, blogsCtrl.index)
 router.get('/:id', checkAuth, blogsCtrl.show)
 router.post('/', checkAuth, blogsCtrl.create)
 router.put('/:id', checkAuth, blogsCtrl.update)
