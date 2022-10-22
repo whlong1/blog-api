@@ -117,19 +117,28 @@ const addLike = async (req, res) => {
   }
 }
 
+const removeLike = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { likes: req.user.profile } },
+      { new: true }
+    )
+    res.status(200).json(blog)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
 
 export {
   createComment,
   updateComment,
   deleteComment,
-
   create,
   index,
   show,
   update,
   deleteBlog as delete,
-
   addLike,
-
+  removeLike,
 }
-
