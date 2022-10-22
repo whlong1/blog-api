@@ -27,7 +27,8 @@ const blogSchema = new mongoose.Schema(
       enum: ['News', 'Sports', 'Games', 'Movies', 'Music', 'Television'],
     },
     comments: [commentSchema],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
   },
   { timestamps: true }
 )
