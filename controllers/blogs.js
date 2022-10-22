@@ -111,7 +111,7 @@ const addLike = async (req, res) => {
       { $push: { likes: req.user.profile } },
       { new: true }
     )
-    res.status(200).json(blog)
+    res.status(200).json(blog.likes)
   } catch (err) {
     res.status(500).json(err)
   }
@@ -124,7 +124,7 @@ const removeLike = async (req, res) => {
       { $pull: { likes: req.user.profile } },
       { new: true }
     )
-    res.status(200).json(blog)
+    res.status(200).json(blog.likes)
   } catch (err) {
     res.status(500).json(err)
   }
