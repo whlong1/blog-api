@@ -21,8 +21,9 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const blogs = await Blog.find({})
-      .populate('author')
       .sort({ createdAt: 'desc' })
+      .populate('author', 'name photo')
+      .select('title text createdAt category author')
     res.status(200).json(blogs)
   } catch (err) {
     res.status(500).json(err)
@@ -32,8 +33,8 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id)
-      .populate('author')
-      .populate('comments.author')
+      .populate('author', 'name photo')
+      .populate('comments.author', 'name photo')
     res.status(200).json(blog)
   } catch (err) {
     return res.status(500).json(err)
