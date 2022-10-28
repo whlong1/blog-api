@@ -107,27 +107,37 @@ const deleteComment = async (req, res) => {
 
 const addLike = async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { $push: { likes: req.user.profile } },
-      { new: true }
-    )
-    res.status(200).json(blog.likes)
-  } catch (err) {
-    res.status(500).json(err)
+    await Promise.all([
+      Blog.findByIdAndUpdate(
+        req.params.id,
+        { $push: { likes: req.user.profile } },
+      ),
+      Profile.findByIdAndUpdate(
+        req.user.profile,
+        { $push: { likedBlogs: req.params.id } },
+      )
+    ])
+    res.status(201).json({ msg: 'OK' })
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
 const removeLike = async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { likes: req.user.profile } },
-      { new: true }
-    )
-    res.status(200).json(blog.likes)
-  } catch (err) {
-    res.status(500).json(err)
+    await Promise.all([
+      Blog.findByIdAndUpdate(
+        req.params.id,
+        { $pull: { likes: req.user.profile } },
+      ),
+      Profile.findByIdAndUpdate(
+        req.user.profile,
+        { $pull: { likedBlogs: req.params.id } },
+      )
+    ])
+    res.status(200).json({ msg: 'OK' })
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
