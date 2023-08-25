@@ -1,4 +1,4 @@
-<img src="src/assets/branding/logotype.svg"/>
+<img src="assets/logotype.svg"/>
 
 ## hoot-api
 
